@@ -1,2 +1,1 @@
-# dotfiles
-My git shortcuts
+# Just my dotfiles

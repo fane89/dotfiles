@@ -1,0 +1,51 @@
+ZSH_THEME="bureau"
+# mkdir $ZSH/custom/themes
+# cp bureau.zsh-theme $ZSH/custom/themes
+COMPLETION_WAITING_DOTS="true"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+plugins=(git brew command-not-found mvn tmux zsh-syntax-highlighting golang docker)
+
+# User configuration
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/vertica/bin/"
+
+export GOPATH=$HOME/go
+export GOROOT=/usr/local/opt/go/libexec
+export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:$GOROOT/bin
+
+source $ZSH/oh-my-zsh.sh
+
+push(){
+  typeset cmnd="$*"
+  typeset ret_code
+  typeset cwd="$(pwd)"
+  typeset dir="${PWD##*/}"
+
+   echo cmnd=$cmnd
+	eval $cmnd
+   ret_code=$?
+   curl --header 'Access-Token: '$PUSHBULLET_TOKEN \
+	     --header 'Content-Type: application/json' \
+	     --data-binary '{"body":"Host='$HOST' pwd='$cwd'","title":"'$ret_code'='$dir'::'$cmnd'","type":"note"}' \
+	     --request POST \
+	     https://api.pushbullet.com/v2/pushes
+}
+
+killhaproxy(){
+	eval sudo pkill -9 "haproxy"
+}
+haproxystatus(){
+	eval sudo ps aux | grep "haproxy"
+}
+sshcat() {
+	eval cat ~/.ssh/config | awk '/'$1'/,/^$/'
+}
+
+alias startdockerdb='docker exec -it db-docker-vertica /bin/bash -c "sudo -u dbadmin -H sh -c \"/opt/vertica/bin/adminTools -t start_db -d default\""'
+alias stopdockerdb='docker exec -it db-docker-vertica /bin/bash -c "sudo -u dbadmin -H sh -c \"/opt/vertica/bin/adminTools -t stop_db -d default -F\""'
+
+export VISUAL=vim
+export EDITOR="$VISUAL"
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8

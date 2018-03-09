@@ -1,0 +1,30 @@
+#[include]
+#	path = ~/dotfiles/git/gitconfig
+
+[core]
+  editor = vim
+  pager = less -X --quit-if-one-screen
+[push]
+  default = simple
+[merge]
+  tool = vimdiff
+  conflictstyle = diff3
+[mergetool]
+   prompt = false
+[alias]
+  co = checkout
+  ci = commit -v
+  cian = commit -v --amend --no-edit
+  ff = merge --ff-only
+  stt = status
+  st = status --short
+  br = branch
+  ls = log --graph --oneline --decorate --pretty=format:\"%C(yellow)%h%Creset%C(cyan)%C(bold)%d%Creset %C(cyan)(%cr)%Creset %C(green)%ce%Creset %s\"
+  fap = fetch -ap
+  current = rev-parse --abbrev-ref HEAD
+  diffr = !CURRENT=$(git current) && git diff $CURRENT..origin/$CURRENT
+  diffb =  log --graph --oneline --decorate --pretty=format:\"%C(yellow)%h%Creset%C(cyan)%C(bold)%d%Creset %C(cyan)(%cr)%Creset %C(green)%ce%Creset %s\" --abbrev-commit --date=relative
+  diffbr = !CURRENT=$(git current) && git  log --graph --oneline --decorate --pretty=format:\"%C(yellow)%h%Creset%C(cyan)%C(bold)%d%Creset %C(cyan)(%cr)%Creset %C(green)%ce%Creset %s\" --abbrev-commit --date=relative ..origin/$CURRENT
+  push-s = !CURRENT=$(git current) && git push --set-upstream origin $CURRENT
+  sh = show --name-status
+  bl = "!zsh -c 'for k in `git branch|sed s/^..//`;do echo -e `git log -1 --pretty=format:\"%Cgreen%ci %Cblue%cr%Creset\" \"$k\" --`\t\"$k\";done|sort' | tail"
