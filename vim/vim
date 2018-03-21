@@ -7,7 +7,7 @@ set nocompatible                " Enables us Vim specific features
 filetype off                    " Reset filetype detection first ...
 filetype plugin indent on       " ... and enable filetype detection
 set laststatus=2                " Show status line always
-set statusline=%f\ -\ FileType:\ %y\ -\ [%l:%L]
+set statusline=%f\ -\ FileType:\ %y\ -\ [%l:%c/%L]
 set encoding=utf-8              " Set default encoding to UTF-8
 set autoindent                  " Enabile Autoindent
 set backspace=indent,eol,start  " Makes backspace key more powerful.
